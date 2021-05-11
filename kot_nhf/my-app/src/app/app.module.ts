@@ -8,6 +8,8 @@ import { RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { TicketDetailComponent } from './ticket-detail/ticket-detail.component';
 
+import { HttpClientModule } from '@angular/common/http';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -17,6 +19,7 @@ import { TicketDetailComponent } from './ticket-detail/ticket-detail.component';
   ],
   imports: [
     BrowserModule,
+    HttpClientModule,
     RouterModule.forRoot([
       {path: 'tickets', component: TicketsComponent},
       {path: 'login', component: LoginComponent},
