@@ -25,7 +25,6 @@ export class LoginService {
       next: data => {
         this.cookieService.delete("jwt")
         this.cookieService.set("jwt", data.jwt)
-        console.log("JWT:" + data.jwt)
       },
       error: error =>{
         //TODO
