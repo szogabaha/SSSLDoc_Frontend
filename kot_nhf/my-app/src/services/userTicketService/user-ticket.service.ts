@@ -6,6 +6,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { CreateNewTicketRequest } from '../../model/CreateNewTicketRequest'
 import { catchError, retry } from 'rxjs/operators';
 import { TicketDetail } from '../../model/TicketDetail'
+import { AddMessageRequest } from '../../model/AddMessageRequest'
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,9 @@ export class UserTicketService {
       )
     }
 
+  addMessageTo(ticketUuid: string, request: AddMessageRequest) {
+    return this.http.post<any>(this.url + "/" + ticketUuid + "/messages", request, this.headers)    
+  }
 
 
   private handleError(error: HttpErrorResponse) {
