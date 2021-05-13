@@ -24,160 +24,116 @@
 <main>
     <div class="card col-12 bg-secondary text-white">
         <div class="card-body">
-            <h5 class="card-title">Ticket name</h5>
-            <h6 class="card-subtitle mb-2">Details</h6>
+            <h5 class="card-subtitle mb-2">Details</h5>
             <div class="container">
                 <div class="row justify-content-md-center">
                     <div class="col-sm-3 col-12">Created at:</div>
-                    <div class="col-sm-9 col-12">2021-04-30</div>
+                    <div class="col-sm-9 col-12">{{getCreatedAt()}}</div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3 col-12">Created by:</div>
-                    <div class="col-sm-9 col-12">Valaki</div>
+                    <div class="col-sm-9 col-12">{{getCreatedBy()}}</div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3 col-12">Assigned to:</div>
-                    <div class="col-sm-9 col-12">Valaki más</div>
+                    <div class="col-sm-9 col-12">{{getAssignee()}}</div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3 col-12">ID:</div>
-                    <div class="col-sm-9 col-12">112358</div>
+                    <div class="col-sm-9 col-12">{{ticket.ticketId}}</div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3 col-12">Type:</div>
-                    <div class="col-sm-9 col-12">Feedback</div>
+                    <div class="col-sm-9 col-12">{{getType()}}</div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3 col-12">Description:</div>
-                    <div class="col-sm-9 col-12">Maci a málnásban, de a barlangban kéne lennie...</div>
+                    <div class="col-sm-9 col-12">{{ticket.description}}</div>
                 </div>
+            </div>
+            <div class="container col-12 ml-3 mt-3">
+                <button type="button" class="btn btn-primary" (click)="refilterMessages(messagesfilter.Shown)">Shown</button>
+                <button type="button" class="btn btn-dark ml-3" (click)="refilterMessages(messagesfilter.Unreviewed)">Unreviewed</button>
+                <button type="button" class="btn btn-danger ml-3" (click)="refilterMessages(messagesfilter.Discarded)">Discarded</button>
             </div>
         </div>
     </div>
-    <div class="container col-12 ml-3">
-        <div class="form-group">
-            <label for="filter">Filter messages</label>
-            <select id="filter" class="form-control" name="filter">
-                <option>Reviewed</option>
-                <option>Unreviewed</option>
-                <option>Discarded</option>
-            </select>
-        </div>
+    <div>
+        <div class="row col-12"></div>
     </div>
-    <div class="card col-12 bg-primary text-white">
+    <div class="card col-12 bg-primary text-white" *ngIf="filter == messagesfilter.Shown">
         <div class="card-body">
-            <h5 class="card-title">Reviewed Messages</h5>
-            <div class="card col-10 text-dark">
-                <div class="card-body">
-                    <h6 class="card-title">Message ID</h6>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">Hahi xdd, ezt az üzenetet mindenki látja!!!!</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-secondary text-right">2021-04-30, Valaki</div>
+            <h5 class="card-title">Shown Messages</h5>
+            <div *ngFor="let message of shownmessages">
+                <div class="card col-10 text-dark">
+                    <div class="card-body">
+                        <h6 class="card-title">{{message.messageId}}</h6>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">{{message.text}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-secondary text-right">{{getMessageCreatedAt(message)}}, {{getMessageCreatedBy(message)}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <div class="row col-12"></div>
-            </div>
-            <div class="card col-10 text-dark">
-                <div class="card-body">
-                    <h6 class="card-title">Message ID</h6>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">Hahi xdd, ezt az üzenetet mindenki látja!!!!</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-secondary text-right">2021-04-30, Valaki</div>
-                        </div>
-                    </div>
+                <div>
+                    <div class="row col-12"></div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card col-12 bg-dark text-white">
+    <div class="card col-12 bg-dark text-white" *ngIf="filter == messagesfilter.Unreviewed">
         <div class="card-body">
             <h5 class="card-title">Unreviewed Messages</h5>
-            <div class="card col-10 text-dark">
-                <div class="card-body">
-                    <div class="row col-12">
-                        <h6 class="card-title col-sm-4 col-12">Message ID</h6>
-                        <div class="col-sm-4 col-12">
+            <div *ngFor="let message of unreviewedmessages">
+                <div class="card col-10 text-dark">
+                    <div class="card-body">
+                        <div class="row col-12">
+                            <h6 class="card-title col-sm-4 col-12">{{message.messageId}}</h6>
+                            <div class="col-sm-4 col-12">
+                            </div>
+                            <div class="col-sm-4 col-12">
+                                <button type="button" class="btn btn-success">Approve</button>
+                                <button type="button" class="btn btn-danger">Discard</button>
+                            </div>
                         </div>
-                        <div class="col-sm-4 col-12">
-                            <button type="button" class="btn btn-success">Approve</button>
-                            <button type="button" class="btn btn-danger">Discard</button>
-                        </div>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">Hahi xdd, ezt az üzenetet nem látja a felhasználó!!!!</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-secondary text-right">2021-04-30, Valaki</div>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">{{message.text}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-secondary text-right">{{getMessageCreatedAt(message)}}, {{getMessageCreatedBy(message)}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <div class="row col-12"></div>
-            </div>
-            <div class="card col-10 text-dark">
-                <div class="card-body">
-                    <div class="row col-12">
-                        <h6 class="card-title col-sm-4 col-12">Message ID</h6>
-                        <div class="col-sm-4 col-12">
-                        </div>
-                        <div class="col-sm-4 col-12">
-                            <button type="button" class="btn btn-success">Approve</button>
-                            <button type="button" class="btn btn-danger">Discard</button>
-                        </div>
-                    </div>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">Hahi xdd, ezt az üzenetet nem látja a felhasználó!!!!</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-secondary text-right">2021-04-30, Valaki</div>
-                        </div>
-                    </div>
+                <div>
+                    <div class="row col-12"></div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="card col-12 bg-danger text-white">
+    <div class="card col-12 bg-danger text-white" *ngIf="filter == messagesfilter.Discarded">
         <div class="card-body">
             <h5 class="card-title">Discarded Messages</h5>
-            <div class="card col-10 bg-warning">
-                <div class="card-body">
-                    <h6 class="card-title col-sm-4 col-12">Message ID</h6>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">Hahi xdd, ezt az üzenetet nem látja a felhasználó!!!!</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-secondary text-right">2021-04-30, Valaki</div>
+            <div *ngFor="let message of discardedmessages">
+                <div class="card col-10 bg-warning">
+                    <div class="card-body">
+                        <h6 class="card-title col-sm-4 col-12">{{message.messageId}}</h6>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-12">{{message.text}}</div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12 text-secondary text-right">{{getMessageCreatedAt(message)}}, {{getMessageCreatedBy(message)}}</div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div>
-                <div class="row col-12"></div>
-            </div>
-            <div class="card col-10 bg-warning">
-                <div class="card-body">
-                    <h6 class="card-title col-sm-4 col-12">Message ID</h6>
-                    <div class="container">
-                        <div class="row">
-                            <div class="col-12">Hahi xdd, ezt az üzenetet nem látja a felhasználó!!!!</div>
-                        </div>
-                        <div class="row">
-                            <div class="col-12 text-secondary text-right">2021-04-30, Valaki</div>
-                        </div>
-                    </div>
+                <div>
+                    <div class="row col-12"></div>
                 </div>
             </div>
         </div>
@@ -185,11 +141,11 @@
     <div>
         <div class="row col-12"></div>
         <button type="button" class="btn btn-info ml-4">New Message</button>
-        <button type="button" class="btn btn-danger ml-4">Close Ticket</button>
+        <button type="button" class="btn btn-danger ml-4" *ngIf="isOpen()">Close Ticket</button>
     </div>
     <div>
         <div class="row col-12"></div>
-        <button type="button" class="btn btn-secondary ml-4">Reopen Ticket</button>
+        <button type="button" class="btn btn-secondary ml-4" *ngIf="!isOpen()">Reopen Ticket</button>
     </div>
     <!-- New Message -->
     <div class="container col-12 ml-3">

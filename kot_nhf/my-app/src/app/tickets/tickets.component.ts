@@ -1,13 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router'
-import { LoginService } from '../../services/login/login.service'
-import { UserTicketService } from '../../services/userTicketService/user-ticket.service'
-import { Location } from '@angular/common';
-import { CreateNewTicketRequest } from '../../model/CreateNewTicketRequest'
-import { RegisteredByMe, RegisteredByMeRequest, Status } from 'src/model/RegisteredByMe';
-import { Observable } from 'rxjs';
-import { TicketDetail } from 'src/model/TicketDetail';
-import { from } from 'rxjs';
+import { LoginService } from '../../services/login/login.service';
+import { UserTicketService } from '../../services/userTicketService/user-ticket.service';
+import { CreateNewTicketRequest } from '../../model/CreateNewTicketRequest';
+import { RegisteredByMe, Status } from 'src/model/RegisteredByMe';
 
 @Component({
   selector: 'app-tickets',
@@ -17,15 +12,10 @@ import { from } from 'rxjs';
 export class TicketsComponent implements OnInit {
 
   constructor(private loginService: LoginService,
-    private activatedRoute: ActivatedRoute,
-    private location: Location,
     private userTicketService: UserTicketService) { }
 
   ngOnInit(): void {
     this.loginService.checkJwtEstablished()
-
-    this.filter = Status.All;
-
     this.getTickets();
 
   }

@@ -17,3 +17,9 @@ export interface TicketDetail {
     assignedTo: string;
     messages: Message[];
 }
+
+export enum MessageFilter {
+    Shown = "Shown",
+    Unreviewed = "Unreviewed",
+    Discarded = "Discarded"
+}

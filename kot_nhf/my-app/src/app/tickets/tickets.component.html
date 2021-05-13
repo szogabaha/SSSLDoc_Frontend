@@ -36,7 +36,7 @@
       </tr>
     </thead>
     <tbody *ngFor="let ticket of myregisteredtickets">
-      <tr class={{getStyle(ticket)}}>
+      <tr class={{getStyle(ticket)}} routerLink="/tickets/{{ticket.ticketId}}">
         <th scope="row">{{getType(ticket)}}</th>
         <td>{{getCreatedBy(ticket)}}</td>
         <td>{{getAssignee(ticket)}}</td>
