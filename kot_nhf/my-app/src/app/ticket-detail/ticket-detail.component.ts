@@ -88,13 +88,14 @@ export class TicketDetailComponent implements OnInit {
   isOpen(){
     return this.isTicketOpen
   }
+
   beginMessage(){
     this.newmessageimpending = true;
   }
   createMessage(){
     console.log(this.newdescription);
-    this.newmessage.message = this.newdescription;
-    this.userTicketService.addMessageTo(this.ticket.ticketId, this.newmessage).subscribe();
+    let nm: AddMessageRequest = {message : this.newdescription};
+    this.userTicketService.addMessageTo(this.ticket.ticketId, nm).subscribe();
     this.newmessageimpending = false;
     this.newdescription = "";
     this.getTicketDetails();
@@ -114,5 +115,5 @@ export class TicketDetailComponent implements OnInit {
   ticketId!: string;
   newmessageimpending : boolean = false;
   newdescription : string = "";
-  newmessage! : AddMessageRequest;
+  ticketInfoAddition! : RegisteredByMe;
 }
