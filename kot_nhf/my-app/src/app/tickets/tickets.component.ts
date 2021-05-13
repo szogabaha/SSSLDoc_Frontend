@@ -37,6 +37,9 @@ export class TicketsComponent implements OnInit {
           }            
         })
 
+        this.userTicketService.getTicketByUuid("7e1b2d9a-c379-4871-aa6b-c038f3681a82").subscribe(ticket => {
+          console.log(ticket)
+        })
         ///Ezt kikommenteztem, hogy ne szemetelje szét a db-t, de egyébként itt egy példa új elem felvitelére.
         /*let request : CreateNewTicketRequest = {
           ticketType: "feedback-request",

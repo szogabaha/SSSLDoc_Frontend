@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders, HttpErrorResponse} from '@angular/common/http'
 import { CookieService } from 'ngx-cookie-service';
 import { CreateNewTicketRequest } from '../../model/CreateNewTicketRequest'
 import { catchError, retry } from 'rxjs/operators';
+import { TicketDetail } from '../../model/TicketDetail'
 
 @Injectable({
   providedIn: 'root'
@@ -41,9 +42,17 @@ export class UserTicketService {
         );
   }
 
-  handleError(error: HttpErrorResponse) {
-    console.log("error")
+  getTicketByUuid(uuid: string) {
+      return this.http.get<TicketDetail>(this.url+"/"+uuid, this.headers)
+      .pipe(
+        catchError(this.handleError)
+      )
+    }
 
+
+
+  private handleError(error: HttpErrorResponse) {
+    //TODO hibaszervisz - hibaüzenet kijelzése a kliensnek
     return throwError("something bad happened")
   }
 }
