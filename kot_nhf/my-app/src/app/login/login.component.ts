@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login/login.service'
 import { ActivatedRoute, Router } from '@angular/router'
 import { Location } from '@angular/common';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,8 @@ export class LoginComponent implements OnInit {
   constructor(private loginService : LoginService,
               private activatedRoute: ActivatedRoute,
               private location: Location,
-              private router: Router) { }
+              private router: Router,
+              private cookieService: CookieService) { }
 
   ngOnInit(): void {
     this.activatedRoute.queryParams.subscribe(params =>{
@@ -23,13 +25,16 @@ export class LoginComponent implements OnInit {
       }
 
       console.log(schAuthAccessToken)
-      if(this.loginService.getBackendJwt(schAuthAccessToken)) {
-        this.router.navigate(['tickets'])
-      } else{
-
-        //TODO
-        console.log("unsuccessful login")
-      }
+      this.loginService.getBackendJwt(schAuthAccessToken).subscribe({
+        next: data => {
+          this.cookieService.set("jwt", data.jwt)
+          this.router.navigate(['tickets'])
+        },
+        error: error =>{
+          //TODO
+          console.error('There was an error', error);
+        }
+      })
 
       
      

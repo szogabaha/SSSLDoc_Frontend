@@ -22,18 +22,7 @@ export class LoginService {
   }
 
   getBackendJwt(schAuthAccessToken : string) {
-    return this.http.post<any>(this.backendLoginEndpoint + "?authorizationCode="+schAuthAccessToken, null).subscribe({
-      next: data => {
-        this.cookieService.delete("jwt")
-        this.cookieService.set("jwt", data.jwt)
-        return true;
-      },
-      error: error =>{
-        //TODO
-        console.error('There was an error', error);
-        return false;
-      }
-    })
+    return this.http.post<any>(this.backendLoginEndpoint + "?authorizationCode="+schAuthAccessToken, null)
   }
 
   logout() {
