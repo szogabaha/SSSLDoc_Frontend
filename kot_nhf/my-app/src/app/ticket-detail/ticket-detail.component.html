@@ -40,7 +40,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-3 col-12">ID:</div>
-                    <div class="col-sm-9 col-12">{{ticket.ticketId}}</div>
+                    <div class="col-sm-9 col-12">{{ticket?.ticketId || "not found"}}</div>
                 </div>
                 <div class="row">
                     <div class="col-sm-3 col-12">Type:</div>
@@ -48,7 +48,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-3 col-12">Description:</div>
-                    <div class="col-sm-9 col-12">{{ticket.description}}</div>
+                    <div class="col-sm-9 col-12">{{ticket?.description || ""}}</div>
                 </div>
             </div>
             <div class="container col-12 ml-3 mt-3">

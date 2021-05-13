@@ -13,6 +13,7 @@ import { UserTicketService } from '../../services/userTicketService/user-ticket.
 })
 export class TicketDetailComponent implements OnInit {
 
+  private isTicketOpen = false
   constructor(private route: ActivatedRoute, 
     private userTicketService: UserTicketService, 
     private loginService: LoginService) { }
@@ -24,6 +25,11 @@ export class TicketDetailComponent implements OnInit {
     });
     console.log(this.ticketId);
     this.getTicketDetails();
+    this.userTicketService.getMyTickets().subscribe({
+      next: data => {
+        this.isTicketOpen = data.registeredByMe.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0)?.isActive || false ;
+      }
+    })
   }
   getTicketDetails() {
     this.userTicketService.getTicketByUuid(this.ticketId).subscribe({
@@ -41,42 +47,29 @@ export class TicketDetailComponent implements OnInit {
   }
 
   getCreatedAt(){
-    let date = new Date(this.ticket.createdAt);
-    return date.toLocaleString();
+    return new Date(this.ticket?.createdAt || Date())
   }
   getCreatedBy(){
-    if (this.ticket.createdBy == null) {
-      return "Anonymous";
-    } else {
-      return this.ticket.createdBy;
-    }
+    return this.ticket?.createdBy || "Anonymus"
   }
   getAssignee()
   {
-    if (this.ticket.assignedTo == null) {
-      return "None";
-    } else {
-      return this.ticket.assignedTo;
-    }
+    return this.ticket?.assignedTo || "None"
   }
   getType()
   {
-    let result = "";
-    switch (this.ticket.ticketType) {
+    switch (this.ticket?.ticketType || "") {
       case "feedback-request":
-        result = "Feedback";
-        break;
+        return "Feedback";
       case "criticism":
-        result = "Criticism";
-        break;
+        return "Criticism";
       case "advice-request":
-        result = "Advice";
-        break;
+        return "Advice";
       case "misc":
-        result = "Misc";
-        break;
+        return "Misc";
+      default:
+        return "not identified"
     }
-    return result;
   }
   getMessageCreatedAt(message : Message){
     let date = new Date(message.createdAt);
@@ -93,13 +86,7 @@ export class TicketDetailComponent implements OnInit {
     this.filter = filter;
   }
   isOpen(){
-    this.userTicketService.getMyTickets().subscribe({
-      next: data => {
-        this.alltickets = data.registeredByMe;
-      }
-    })
-    let ticketInfoAddition = this.alltickets.find(cmp => cmp.ticketId == this.ticket.ticketId);
-    return ticketInfoAddition?.isActive;
+    return this.isTicketOpen
   }
   beginMessage(){
     this.newmessageimpending = true;
