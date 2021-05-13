@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { RegisteredByMe } from 'src/model/RegisteredByMe';
+import { AddMessageRequest } from 'src/model/AddMessageRequest';
 import { MessageFilter, TicketDetail, Message } from 'src/model/TicketDetail';
 import { LoginService } from 'src/services/login/login.service';
 import { UserTicketService } from '../../services/userTicketService/user-ticket.service';
@@ -100,6 +101,21 @@ export class TicketDetailComponent implements OnInit {
     let ticketInfoAddition = this.alltickets.find(cmp => cmp.ticketId == this.ticket.ticketId);
     return ticketInfoAddition?.isActive;
   }
+  beginMessage(){
+    this.newmessageimpending = true;
+  }
+  createMessage(){
+    console.log(this.newdescription);
+    this.newmessage.message = this.newdescription;
+    this.userTicketService.addMessageTo(this.ticket.ticketId, this.newmessage).subscribe();
+    this.newmessageimpending = false;
+    this.newdescription = "";
+    this.getTicketDetails();
+  }
+  abortMessage(){
+    this.newmessageimpending = false;
+    this.newdescription = "";
+  }
 
   alltickets! : RegisteredByMe[];
   shownmessages! : Message[];
@@ -109,5 +125,7 @@ export class TicketDetailComponent implements OnInit {
   filter : MessageFilter = MessageFilter.Shown;
   public messagesfilter = MessageFilter;
   ticketId!: string;
-
+  newmessageimpending : boolean = false;
+  newdescription : string = "";
+  newmessage! : AddMessageRequest;
 }

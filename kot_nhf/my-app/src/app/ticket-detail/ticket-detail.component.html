@@ -140,7 +140,7 @@
     </div>
     <div>
         <div class="row col-12"></div>
-        <button type="button" class="btn btn-info ml-4">New Message</button>
+        <button type="button" class="btn btn-info ml-4" (click)="beginMessage()">New Message</button>
         <button type="button" class="btn btn-danger ml-4" *ngIf="isOpen()">Close Ticket</button>
     </div>
     <div>
@@ -148,34 +148,10 @@
         <button type="button" class="btn btn-secondary ml-4" *ngIf="!isOpen()">Reopen Ticket</button>
     </div>
     <!-- New Message -->
-    <div class="container col-12 ml-3">
+    <div class="container col-12 ml-3" *ngIf="newmessageimpending">
         <h6>New Message</h6>
-        <textarea class="col-12" rows="5"></textarea>
-        <input type="button" class="btn btn-info" value="Create">
-        <input type="button" class="btn btn-danger ml-1" value="Cancel">
-    </div>
-    <!-- New Ticket -->
-    <div class="container col-12">
-        <h4 class="ml-3">New Ticket</h4>
-        <div class="container col-12">
-            <div class="row">
-                <div class="col-12">Type:</div>
-                <div class="col-sm-8 col-12">
-                    <input type="text">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">Description:</div>
-                <textarea class="col-sm-10 col-12 ml-3" rows="5"></textarea>
-            </div>
-            <div class="row">
-                <div class="col-sm-2 col-12">Anonymous:</div>
-                <div class="col-sm-8 col-12">
-                    <input type="checkbox">
-                </div>
-            </div>
-        </div>
-        <input type="button" class="btn btn-info ml-3" value="Create">
-        <input type="button" class="btn btn-danger ml-3" value="Cancel">
+        <textarea class="col-12 form-control" rows="5" ng-model="newdescription"></textarea>
+        <button type="button" class="btn btn-info" (click)="createMessage()">Create</button>
+        <button type="button" class="btn btn-danger ml-1" (click)="abortMessage()">Cancel</button>
     </div>
 </main>
