@@ -93,21 +93,16 @@ export class TicketDetailComponent implements OnInit {
     this.filter = filter;
   }
   isOpen(){
-    this.userTicketService.getMyTickets().subscribe({
-      next: data => {
-        this.alltickets = data.registeredByMe;
-      }
-    })
-    let ticketInfoAddition = this.alltickets.find(cmp => cmp.ticketId == this.ticket.ticketId);
-    return ticketInfoAddition?.isActive;
+    return true;
   }
+
   beginMessage(){
     this.newmessageimpending = true;
   }
   createMessage(){
     console.log(this.newdescription);
-    this.newmessage.message = this.newdescription;
-    this.userTicketService.addMessageTo(this.ticket.ticketId, this.newmessage).subscribe();
+    let nm: AddMessageRequest = {message : this.newdescription};
+    this.userTicketService.addMessageTo(this.ticket.ticketId, nm).subscribe();
     this.newmessageimpending = false;
     this.newdescription = "";
     this.getTicketDetails();
@@ -127,5 +122,5 @@ export class TicketDetailComponent implements OnInit {
   ticketId!: string;
   newmessageimpending : boolean = false;
   newdescription : string = "";
-  newmessage! : AddMessageRequest;
+  ticketInfoAddition! : RegisteredByMe;
 }

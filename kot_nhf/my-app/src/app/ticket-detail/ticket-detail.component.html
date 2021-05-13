@@ -150,7 +150,7 @@
     <!-- New Message -->
     <div class="container col-12 ml-3" *ngIf="newmessageimpending">
         <h6>New Message</h6>
-        <textarea class="col-12 form-control" rows="5" ng-model="newdescription"></textarea>
+        <textarea class="col-12 form-control" rows="5" [(ngModel)]="newdescription"></textarea>
         <button type="button" class="btn btn-info" (click)="createMessage()">Create</button>
         <button type="button" class="btn btn-danger ml-1" (click)="abortMessage()">Cancel</button>
     </div>

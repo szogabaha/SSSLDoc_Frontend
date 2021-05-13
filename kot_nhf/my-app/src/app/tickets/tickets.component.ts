@@ -15,7 +15,7 @@ export class TicketsComponent implements OnInit {
     private userTicketService: UserTicketService) { }
 
   ngOnInit(): void {
-    this.loginService.checkJwtEstablished()
+    this.loginService.checkJwtEstablished();
     this.getTickets();
 
   }
