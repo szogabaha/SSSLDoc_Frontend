@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router'
 
 @Injectable({
   providedIn: 'root'
@@ -13,7 +13,8 @@ export class LoginService {
 
   constructor(
     private http: HttpClient,
-    private cookieService: CookieService
+    private cookieService: CookieService,
+    private router: Router
     ) { }
 
   getSchAccessToken() {
@@ -25,12 +26,26 @@ export class LoginService {
       next: data => {
         this.cookieService.delete("jwt")
         this.cookieService.set("jwt", data.jwt)
+        return true;
       },
       error: error =>{
         //TODO
         console.error('There was an error', error);
+        return false;
       }
     })
+  }
+
+  logout() {
+    this.cookieService.delete("jwt")
+    this.router.navigate(['login'])
+  }
+
+  checkJwtEstablished() {
+    let jwt = this.cookieService.get("jwt")
+    if (!jwt) {
+      this.logout()
+    }
   }
   
 }
