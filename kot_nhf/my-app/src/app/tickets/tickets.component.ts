@@ -17,17 +17,12 @@ import { from } from 'rxjs';
 export class TicketsComponent implements OnInit {
 
   constructor(private loginService: LoginService,
-              private activatedRoute: ActivatedRoute, 
-              private location : Location, 
-              private userTicketService: UserTicketService) { }
+    private activatedRoute: ActivatedRoute,
+    private location: Location,
+    private userTicketService: UserTicketService) { }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(params =>{
-      var schAuthAccessToken = params['code']
-      if (schAuthAccessToken){
-        console.log(schAuthAccessToken)
-        this.loginService.getBackendJwt(schAuthAccessToken)
-        this.location.replaceState(this.location.path().split('?')[0], '');
+    this.loginService.checkJwtEstablished()
 
 
         this.userTicketService.getTicketByUuid("7e1b2d9a-c379-4871-aa6b-c038f3681a82").subscribe(ticket => {
@@ -43,8 +38,8 @@ export class TicketsComponent implements OnInit {
       }
       this.userTicketService.createNewTickets(request).subscribe();*/
       this.getTickets();
-      
-    })  
+
+    })
   }
 
   getTickets() {
@@ -74,7 +69,7 @@ export class TicketsComponent implements OnInit {
       },
       error: error => {
         console.log("ERROR");
-      }            
+      }
     })
   }
 
