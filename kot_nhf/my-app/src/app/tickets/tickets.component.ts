@@ -24,41 +24,29 @@ export class TicketsComponent implements OnInit {
   ngOnInit(): void {
     this.loginService.checkJwtEstablished()
 
+    this.filter = Status.All;
 
-        this.userTicketService.getTicketByUuid("7e1b2d9a-c379-4871-aa6b-c038f3681a82").subscribe(ticket => {
-          console.log(ticket);
-        })
-        this.filter = Status.All;
-      }
-      ///Ezt kikommenteztem, hogy ne szemetelje szét a db-t, de egyébként itt egy példa új elem felvitelére.
-      /*let request : CreateNewTicketRequest = {
-        ticketType: "misc",
-        isAnonym: true,
-        description: "valahanyadik"
-      }
-      this.userTicketService.createNewTickets(request).subscribe();*/
-      this.getTickets();
+    this.getTickets();
 
-    })
   }
 
   getTickets() {
     this.userTicketService.getMyTickets().subscribe({
       next: data => {
         this.myregisteredtickets = data.registeredByMe.filter(cmp => {
-          if (this.filter == Status.All){
+          if (this.filter == Status.All) {
             return true;
           }
-          if (this.filter == Status.New){
+          if (this.filter == Status.New) {
             return cmp.assignedTo == null && cmp.isActive && cmp.ticketType != "feedback-request"
           }
-          if (this.filter == Status.Assigned){
+          if (this.filter == Status.Assigned) {
             return cmp.assignedTo != null && cmp.isActive && cmp.ticketType != "feedback-request"
           }
-          if (this.filter == Status.Feedback){
+          if (this.filter == Status.Feedback) {
             return cmp.ticketType == "feedback-request"
           }
-          if (this.filter == Status.Closed){
+          if (this.filter == Status.Closed) {
             return !cmp.isActive && cmp.ticketType != "feedback-request"
           }
           return true;
@@ -73,9 +61,9 @@ export class TicketsComponent implements OnInit {
     })
   }
 
-  getType(ticket : RegisteredByMe) : string{
+  getType(ticket: RegisteredByMe): string {
     let result = "";
-    switch(ticket.ticketType){
+    switch (ticket.ticketType) {
       case "feedback-request":
         result = "Feedback";
         break;
@@ -92,54 +80,54 @@ export class TicketsComponent implements OnInit {
     return result;
   }
 
-  getCreatedBy(ticket : RegisteredByMe) : string{
-    if (ticket.createdBy == null){
+  getCreatedBy(ticket: RegisteredByMe): string {
+    if (ticket.createdBy == null) {
       return "Anonymous";
-    } else{
+    } else {
       return ticket.createdBy;
     }
   }
 
-  getActive(ticket : RegisteredByMe) : string{
-    if (ticket.isActive){
+  getActive(ticket: RegisteredByMe): string {
+    if (ticket.isActive) {
       return "Active";
     } else {
       return "Closed"
     }
   }
 
-  getCreatedAt(ticket : RegisteredByMe) : string{
+  getCreatedAt(ticket: RegisteredByMe): string {
     let date = new Date(ticket.createdAt);
     return date.toLocaleString();
   }
 
-  getAssignee(ticket: RegisteredByMe) : string{
-    if (ticket.assignedTo == null){
+  getAssignee(ticket: RegisteredByMe): string {
+    if (ticket.assignedTo == null) {
       return "None";
     } else {
       return ticket.assignedTo;
     }
   }
 
-  getStyle(ticket : RegisteredByMe) : string{
-    if(ticket.ticketType == "feedback-request")
+  getStyle(ticket: RegisteredByMe): string {
+    if (ticket.ticketType == "feedback-request")
       return "table-warning";
-    if(!ticket.isActive)
+    if (!ticket.isActive)
       return "table-dark";
-    if(ticket.assignedTo == null)
+    if (ticket.assignedTo == null)
       return "table-info";
     else
       return "table-secondary";
   }
 
-  reFilter(filtering : Status){
-      this.filter = filtering;
-      this.getTickets();
+  reFilter(filtering: Status) {
+    this.filter = filtering;
+    this.getTickets();
   }
 
-  myregisteredtickets : RegisteredByMe[] | undefined;
+  myregisteredtickets: RegisteredByMe[] | undefined;
   //TODO: ha meglesz az ügyintézős / admin cucc, akkor kell majd vagy majd megkérdezem
-  assignedtickets : RegisteredByMe[] | undefined;
-  filter : Status = Status.All;
+  assignedtickets: RegisteredByMe[] | undefined;
+  filter: Status = Status.All;
   public status = Status;
 }
