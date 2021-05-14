@@ -5,6 +5,7 @@ import { AddMessageRequest } from 'src/model/AddMessageRequest';
 import { MessageFilter, TicketDetail, Message } from 'src/model/TicketDetail';
 import { LoginService } from 'src/services/login/login.service';
 import { UserTicketService } from '../../services/userTicketService/user-ticket.service';
+import { ModeratorServiceService } from 'src/services/moderator/moderator-service.service';
 import { windowTime } from 'rxjs/operators';
 
 @Component({
@@ -15,9 +16,10 @@ import { windowTime } from 'rxjs/operators';
 export class TicketDetailComponent implements OnInit {
 
   private isTicketOpen = false
-  constructor(private route: ActivatedRoute, 
-    private userTicketService: UserTicketService, 
-    private loginService: LoginService) { }
+  constructor(private route: ActivatedRoute,
+    private userTicketService: UserTicketService,
+    private loginService: LoginService,
+    private moderatorService: ModeratorServiceService) { }
 
   ngOnInit(): void {
     this.loginService.checkJwtEstablished()
@@ -28,7 +30,7 @@ export class TicketDetailComponent implements OnInit {
     this.getTicketDetails();
     this.userTicketService.getMyTickets().subscribe({
       next: data => {
-        this.isTicketOpen = data.registeredByMe.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0)?.isActive || true ;
+        this.isTicketOpen = data.registeredByMe.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0)?.isActive || false;
       }
     })
   }
@@ -47,18 +49,16 @@ export class TicketDetailComponent implements OnInit {
     })
   }
 
-  getCreatedAt(){
+  getCreatedAt() {
     return new Date(this.ticket?.createdAt || Date())
   }
-  getCreatedBy(){
+  getCreatedBy() {
     return this.ticket?.createdBy || "Anonymus"
   }
-  getAssignee()
-  {
+  getAssignee() {
     return this.ticket?.assignedTo || "None"
   }
-  getType()
-  {
+  getType() {
     switch (this.ticket?.ticketType || "") {
       case "feedback-request":
         return "Feedback";
@@ -72,50 +72,65 @@ export class TicketDetailComponent implements OnInit {
         return "not identified"
     }
   }
-  getMessageCreatedAt(message : Message){
+  getMessageCreatedAt(message: Message) {
     let date = new Date(message.createdAt);
     return date.toLocaleString();
   }
-  getMessageCreatedBy(message : Message){
+  getMessageCreatedBy(message: Message) {
     if (message.createdBy == null) {
       return "Anonymous";
     } else {
       return message.createdBy;
     }
   }
-  refilterMessages(filter : MessageFilter){
+  refilterMessages(filter: MessageFilter) {
     this.filter = filter;
   }
-  isOpen(){
+  isOpen() {
     return this.isTicketOpen
   }
 
-  beginMessage(){
+  beginMessage() {
     this.newmessageimpending = true;
   }
-  createMessage(){
+  createMessage() {
     console.log(this.newdescription);
-    let nm: AddMessageRequest = {message : this.newdescription};
+    let nm: AddMessageRequest = { message: this.newdescription };
     this.userTicketService.addMessageTo(this.ticket.ticketId, nm).subscribe();
     this.newmessageimpending = false;
     this.newdescription = "";
     this.getTicketDetails();
     window.location.reload();
   }
-  abortMessage(){
+  abortMessage() {
     this.newmessageimpending = false;
     this.newdescription = "";
   }
 
-  alltickets! : RegisteredByMe[];
-  shownmessages! : Message[];
-  unreviewedmessages! : Message[];
-  discardedmessages! : Message[];
+  closeTicket() {
+    if (this.isTicketOpen) {
+      this.moderatorService.closeTicket(this.ticket.ticketId);
+      window.location.reload();
+    }
+  }
+
+
+  openTicket() {
+    if (!this.isTicketOpen) {
+      this.moderatorService.openTicket(this.ticket.ticketId);
+      window.location.reload();
+    }
+  }
+
+  alltickets!: RegisteredByMe[];
+  shownmessages!: Message[];
+  unreviewedmessages!: Message[];
+  discardedmessages!: Message[];
   ticket!: TicketDetail;
-  filter : MessageFilter = MessageFilter.Shown;
+  filter: MessageFilter = MessageFilter.Shown;
   public messagesfilter = MessageFilter;
   ticketId!: string;
-  newmessageimpending : boolean = false;
-  newdescription : string = "";
-  ticketInfoAddition! : RegisteredByMe;
+  newmessageimpending: boolean = false;
+  newdescription: string = "";
+  ticketInfoAddition!: RegisteredByMe;
 }

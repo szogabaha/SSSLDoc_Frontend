@@ -118,11 +118,11 @@
     <div>
         <div class="row col-12"></div>
         <button type="button" class="btn btn-info ml-4" (click)="beginMessage()" *ngIf="isOpen()">New Message</button>
-        <button type="button" class="btn btn-danger ml-4" *ngIf="isOpen()">Close Ticket</button>
+        <button type="button" class="btn btn-danger ml-4" *ngIf="isOpen()" (click)="closeTicket()">Close Ticket</button>
     </div>
     <div>
         <div class="row col-12"></div>
-        <button type="button" class="btn btn-secondary ml-4" *ngIf="!isOpen()">Reopen Ticket</button>
+        <button type="button" class="btn btn-secondary ml-4" *ngIf="!isOpen()" (click)="openTicket()">Reopen Ticket</button>
     </div>
     <!-- New Message -->
     <div class="container col-12 ml-3" *ngIf="newmessageimpending">
