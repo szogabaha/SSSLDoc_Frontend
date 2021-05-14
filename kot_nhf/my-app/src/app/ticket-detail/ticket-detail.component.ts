@@ -37,9 +37,9 @@ export class TicketDetailComponent implements OnInit {
         this.shownmessages = dataOuter.messages.filter(cmp => cmp.status = "Shown");
         this.unreviewedmessages = dataOuter.messages.filter(cmp => cmp.reviewedBy == "Unreviewed");
         this.discardedmessages = dataOuter.messages.filter(cmp => cmp.reviewedBy == "Discarded");
-        this.userTicketService.getMyTickets().subscribe({
+        this.moderatorService.getAllTickets().subscribe({
           next: data => {
-            this.isTicketOpen = data.registeredByMe.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0)?.isActive || false;
+            this.isTicketOpen = data.tickets.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0)?.isActive || false;
           }
         })
       },
