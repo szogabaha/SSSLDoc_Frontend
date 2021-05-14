@@ -5,6 +5,7 @@ import { AddMessageRequest } from 'src/model/AddMessageRequest';
 import { MessageFilter, TicketDetail, Message } from 'src/model/TicketDetail';
 import { LoginService } from 'src/services/login/login.service';
 import { UserTicketService } from '../../services/userTicketService/user-ticket.service';
+import { windowTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -27,7 +28,7 @@ export class TicketDetailComponent implements OnInit {
     this.getTicketDetails();
     this.userTicketService.getMyTickets().subscribe({
       next: data => {
-        this.isTicketOpen = data.registeredByMe.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0)?.isActive || false ;
+        this.isTicketOpen = data.registeredByMe.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0)?.isActive || true ;
       }
     })
   }
@@ -99,6 +100,7 @@ export class TicketDetailComponent implements OnInit {
     this.newmessageimpending = false;
     this.newdescription = "";
     this.getTicketDetails();
+    window.location.reload();
   }
   abortMessage(){
     this.newmessageimpending = false;

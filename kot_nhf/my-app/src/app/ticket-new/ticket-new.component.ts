@@ -43,7 +43,7 @@ export class TicketNewComponent implements OnInit {
       description : this.description
     }
     this.userTicketService.createNewTickets(ticket).subscribe();
-    this.router.navigate(["/tickets"]);
+    window.location.href = "/tickets";
   }
 
   type! : string;
