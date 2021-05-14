@@ -1,6 +1,6 @@
   <!-- Buttons-->
   <div class="p-3 float-left">
-    <button type="button" class="btn btn-info" (click) = "switchAdminButton()">Show my tickets</button>
+    <button type="button" class="btn btn-info" (click) = "switchAdminButton()" *ngIf="!isituser">{{showbuttontext}}</button>
   </div>
   <div class="btn-group btn-group-toggle float-right p-3" data-toggle="buttons">
     <label class="btn btn-outline-primary" [class.active]="filter == status.All">
