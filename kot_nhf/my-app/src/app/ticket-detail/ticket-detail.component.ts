@@ -6,7 +6,6 @@ import { MessageFilter, TicketDetail, Message } from 'src/model/TicketDetail';
 import { LoginService } from 'src/services/login/login.service';
 import { UserTicketService } from '../../services/userTicketService/user-ticket.service';
 import { ModeratorServiceService } from 'src/services/moderator/moderator-service.service';
-import { windowTime } from 'rxjs/operators';
 
 @Component({
   selector: 'app-ticket-detail',

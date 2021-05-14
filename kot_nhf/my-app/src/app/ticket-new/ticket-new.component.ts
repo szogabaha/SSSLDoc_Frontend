@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CreateNewTicketRequest } from 'src/model/CreateNewTicketRequest';
 import { UserTicketService } from '../../services/userTicketService/user-ticket.service';
-import { ActivatedRoute, Router } from '@angular/router'
+import { Router } from '@angular/router'
 
 @Component({
   selector: 'app-ticket-new',
