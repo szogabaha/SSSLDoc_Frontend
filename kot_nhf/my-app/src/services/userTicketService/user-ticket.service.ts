@@ -17,10 +17,7 @@ export class UserTicketService {
 
 
   private url = "http://localhost:9000/api/tickets/"
-  private headers = {
-      headers: new HttpHeaders().set('Authorization', 'Bearer '
-                                      + this.cookieService.get("jwt")
-                                    )}
+  private headers = { headers: new HttpHeaders().set('Authorization', 'Bearer '+ this.cookieService.get("jwt"))}
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
