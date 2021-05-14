@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login/login.service';
 import { UserTicketService } from '../../services/userTicketService/user-ticket.service';
-import { CreateNewTicketRequest } from '../../model/CreateNewTicketRequest';
 import { RegisteredByMe, Status } from 'src/model/RegisteredByMe';
+import { ModeratorServiceService } from '../../services/moderator/moderator-service.service'
 
 @Component({
   selector: 'app-tickets',
@@ -12,7 +12,8 @@ import { RegisteredByMe, Status } from 'src/model/RegisteredByMe';
 export class TicketsComponent implements OnInit {
 
   constructor(private loginService: LoginService,
-    private userTicketService: UserTicketService) { }
+    private userTicketService: UserTicketService,
+    private moderatorService: ModeratorServiceService) { }
 
   ngOnInit(): void {
     this.loginService.checkJwtEstablished();
@@ -115,9 +116,16 @@ export class TicketsComponent implements OnInit {
     this.getTickets();
   }
 
+  switchAdminButton() {
+    this.moderatorService.getAllTickets().subscribe(data => {
+      this.myregisteredtickets = data.tickets
+    })
+  }
+
   myregisteredtickets: RegisteredByMe[] | undefined;
   //TODO: ha meglesz az ügyintézős / admin cucc, akkor kell majd vagy majd megkérdezem
   assignedtickets: RegisteredByMe[] | undefined;
   filter: Status = Status.All;
   public status = Status;
+  
 }
