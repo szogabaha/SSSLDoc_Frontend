@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CreateNewTicketRequest } from 'src/model/CreateNewTicketRequest';
-import { UserTicketService } from '../../services/userTicketService/user-ticket.service';
+import { UserTicketService } from '../../services/userTicket/user-ticket.service';
 import { Router } from '@angular/router'
 
 @Component({

@@ -27,20 +27,19 @@ export class TicketDetailComponent implements OnInit {
     });
     console.log(this.ticketId);
     this.getTicketDetails();
-    this.userTicketService.getMyTickets().subscribe({
-      next: data => {
-        this.isTicketOpen = data.registeredByMe.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0)?.isActive || false;
-      }
-    })
   }
   getTicketDetails() {
     this.userTicketService.getTicketByUuid(this.ticketId).subscribe({
-      next: data => {
-        this.ticket = data;
-        this.shownmessages = this.ticket.messages.filter(cmp => cmp.status = "Shown");
-        this.unreviewedmessages = this.ticket.messages.filter(cmp => cmp.reviewedBy == "Unreviewed");
-        this.discardedmessages = this.ticket.messages.filter(cmp => cmp.reviewedBy == "Discarded");
-        console.log(this.ticket);
+      next: dataOuter => {
+        this.ticket = dataOuter;
+        this.shownmessages = dataOuter.messages.filter(cmp => cmp.status = "Shown");
+        this.unreviewedmessages = dataOuter.messages.filter(cmp => cmp.reviewedBy == "Unreviewed");
+        this.discardedmessages = dataOuter.messages.filter(cmp => cmp.reviewedBy == "Discarded");
+        this.userTicketService.getMyTickets().subscribe({
+          next: data => {
+            this.isTicketOpen = data.registeredByMe.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0)?.isActive || false;
+          }
+        })
       },
       error: error => {
         console.log("ERROR");
