@@ -15,7 +15,7 @@ import { ErrorService } from 'src/services/error/error.service';
 })
 export class TicketDetailComponent implements OnInit {
 
-  isTicketOpen! : boolean;
+  isTicketOpen : boolean | undefined;
   constructor(private route: ActivatedRoute,
     private userTicketService: UserTicketService,
     private loginService: LoginService,
@@ -37,11 +37,22 @@ export class TicketDetailComponent implements OnInit {
         this.shownmessages = dataOuter.messages.filter(cmp => cmp.status = "Shown");
         this.unreviewedmessages = dataOuter.messages.filter(cmp => cmp.reviewedBy == "Unreviewed");
         this.discardedmessages = dataOuter.messages.filter(cmp => cmp.reviewedBy == "Discarded");
-        this.moderatorService.getAllTickets().subscribe({
+        this.userTicketService.getMyTickets().subscribe({
           next: data => {
-            this.isTicketOpen = data.tickets.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0)?.isActive || false;
+            this.thisTicket = data.registeredByMe.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0);
+            if (this.thisTicket == null){
+              this.moderatorService.getAllTickets().subscribe({
+                next: dataInner => {
+                  this.thisTicket = dataInner.tickets.find(cmp => cmp.ticketId == this.ticket?.ticketId || 0);
+                  this.isTicketOpen = this.thisTicket?.isActive;
+                }
+              })
+            } else{
+              this.isTicketOpen = this.thisTicket.isActive;
+            }
           }
         })
+        
       },
       error: error => {
         console.log("ERROR");
@@ -129,6 +140,7 @@ export class TicketDetailComponent implements OnInit {
   unreviewedmessages!: Message[];
   discardedmessages!: Message[];
   ticket!: TicketDetail;
+  thisTicket : RegisteredByMe | undefined;
   filter: MessageFilter = MessageFilter.Shown;
   public messagesfilter = MessageFilter;
   ticketId!: string;

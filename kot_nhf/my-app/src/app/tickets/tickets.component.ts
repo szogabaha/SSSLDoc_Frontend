@@ -167,7 +167,7 @@ export class TicketsComponent implements OnInit {
   filter: Status = Status.All;
   public status = Status;
   isituser : boolean = false;
-  showbuttontext : string = "Show my tickets";
-  showbuttonstate : boolean = false;
+  showbuttontext : string = "Show all tickets";
+  showbuttonstate : boolean = true;
   subscription! : Subscription;
 }
