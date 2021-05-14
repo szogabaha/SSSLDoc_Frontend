@@ -6,6 +6,7 @@ import { MessageFilter, TicketDetail, Message } from 'src/model/TicketDetail';
 import { LoginService } from 'src/services/login/login.service';
 import { UserTicketService } from '../../services/userTicketService/user-ticket.service';
 import { ModeratorServiceService } from 'src/services/moderator/moderator-service.service';
+import { ErrorService } from 'src/services/error/error.service';
 
 @Component({
   selector: 'app-ticket-detail',
@@ -14,11 +15,12 @@ import { ModeratorServiceService } from 'src/services/moderator/moderator-servic
 })
 export class TicketDetailComponent implements OnInit {
 
-  private isTicketOpen = false
+  isTicketOpen! : boolean;
   constructor(private route: ActivatedRoute,
     private userTicketService: UserTicketService,
     private loginService: LoginService,
-    private moderatorService: ModeratorServiceService) { }
+    private moderatorService: ModeratorServiceService,
+    private errorService : ErrorService) { }
 
   ngOnInit(): void {
     this.loginService.checkJwtEstablished()
@@ -44,12 +46,14 @@ export class TicketDetailComponent implements OnInit {
       },
       error: error => {
         console.log("ERROR");
+        this.errorService.showError("ERROR");
       }
     })
   }
 
   getCreatedAt() {
-    return new Date(this.ticket?.createdAt || Date())
+    let date = new Date(this.ticket?.createdAt || Date());
+    return date.toLocaleString();
   }
   getCreatedBy() {
     return this.ticket?.createdBy || "Anonymus"
@@ -132,4 +136,6 @@ export class TicketDetailComponent implements OnInit {
   newmessageimpending: boolean = false;
   newdescription: string = "";
   ticketInfoAddition!: RegisteredByMe;
+  isituser : boolean = false;
+  isitadmin : boolean = true;
 }

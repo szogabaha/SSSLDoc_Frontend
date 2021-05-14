@@ -30,8 +30,8 @@
             </div>
             <div class="container col-12 ml-3 mt-3">
                 <button type="button" class="btn btn-primary" (click)="refilterMessages(messagesfilter.Shown)">Shown</button>
-                <button type="button" class="btn btn-dark ml-3" (click)="refilterMessages(messagesfilter.Unreviewed)">Unreviewed</button>
-                <button type="button" class="btn btn-danger ml-3" (click)="refilterMessages(messagesfilter.Discarded)">Discarded</button>
+                <button type="button" class="btn btn-dark ml-3" (click)="refilterMessages(messagesfilter.Unreviewed)" *ngIf="!isituser">Unreviewed</button>
+                <button type="button" class="btn btn-danger ml-3" (click)="refilterMessages(messagesfilter.Discarded)"*ngIf="!isituser">Discarded</button>
             </div>
         </div>
     </div>
@@ -72,8 +72,8 @@
                             <div class="col-sm-4 col-12">
                             </div>
                             <div class="col-sm-4 col-12">
-                                <button type="button" class="btn btn-success">Approve</button>
-                                <button type="button" class="btn btn-danger">Discard</button>
+                                <button type="button" class="btn btn-success" *ngIf="isitadmin">Approve</button>
+                                <button type="button" class="btn btn-danger" *ngIf="isitadmin">Discard</button>
                             </div>
                         </div>
                         <div class="container">
@@ -117,12 +117,12 @@
     </div>
     <div>
         <div class="row col-12"></div>
-        <button type="button" class="btn btn-info ml-4" (click)="beginMessage()" *ngIf="isOpen()">New Message</button>
-        <button type="button" class="btn btn-danger ml-4" *ngIf="isOpen()" (click)="closeTicket()">Close Ticket</button>
+        <button type="button" class="btn btn-info ml-4" (click)="beginMessage()" *ngIf="isTicketOpen">New Message</button>
+        <button type="button" class="btn btn-danger ml-4" *ngIf="isTicketOpen" (click)="closeTicket()">Close Ticket</button>
     </div>
     <div>
         <div class="row col-12"></div>
-        <button type="button" class="btn btn-secondary ml-4" *ngIf="!isOpen()" (click)="openTicket()">Reopen Ticket</button>
+        <button type="button" class="btn btn-secondary ml-4" *ngIf="!isTicketOpen" (click)="openTicket()">Reopen Ticket</button>
     </div>
     <!-- New Message -->
     <div class="container col-12 ml-3" *ngIf="newmessageimpending">
