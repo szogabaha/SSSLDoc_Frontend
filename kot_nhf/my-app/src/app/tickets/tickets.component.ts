@@ -23,6 +23,7 @@ export class TicketsComponent implements OnInit {
     this.getTickets();
   }
 
+  //We're getting the tickets that we can list. As we dont know our authorization, we need to try listing all and if it does not succeed, then we list ours only
   getTickets() {
     if (this.showbuttonstate){
       if (this.subscription != undefined)
@@ -85,6 +86,7 @@ export class TicketsComponent implements OnInit {
     
   }
 
+  //These are delegate functions, that we use to bind values to the dom elements.
   getType(ticket: RegisteredByMe): string {
     let result = "";
     switch (ticket.ticketType) {
@@ -147,6 +149,7 @@ export class TicketsComponent implements OnInit {
     this.getTickets();
   }
 
+  //The button has two views: List all tickets or list our tickets. By pressing it, it changes state.
   switchAdminButton() {
     if (this.showbuttonstate) {
       this.showbuttonstate = false;

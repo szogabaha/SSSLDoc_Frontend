@@ -15,6 +15,7 @@ import { ErrorService } from 'src/services/error/error.service';
 })
 export class TicketDetailComponent implements OnInit {
 
+  //We have to play with it's value because we cannot identify it directly from the backend.
   isTicketOpen : boolean | undefined;
   constructor(private route: ActivatedRoute,
     private userTicketService: UserTicketService,
@@ -30,6 +31,10 @@ export class TicketDetailComponent implements OnInit {
     console.log(this.ticketId);
     this.getTicketDetails();
   }
+
+  //This is quite an ugly solution but we couldn't solve it by any other way.
+  //We try to get the ticket's state by querying the list of tickets and filtering them.
+  //Just to mention it: When using getTicketByUuid, the response does not contain the status, that is why we've got to do this 
   getTicketDetails() {
     this.userTicketService.getTicketByUuid(this.ticketId).subscribe({
       next: dataOuter => {
@@ -61,6 +66,7 @@ export class TicketDetailComponent implements OnInit {
     })
   }
 
+  //The following functions are binded to the elements of the DOM? so that they change dynamically when something else changes.
   getCreatedAt() {
     let date = new Date(this.ticket?.createdAt || Date());
     return date.toLocaleString();
@@ -99,10 +105,12 @@ export class TicketDetailComponent implements OnInit {
   refilterMessages(filter: MessageFilter) {
     this.filter = filter;
   }
+  //The value is set and binded in ngInit
   isOpen() {
     return this.isTicketOpen
   }
 
+  //Delegating the requests to the service
   beginMessage() {
     this.newmessageimpending = true;
   }

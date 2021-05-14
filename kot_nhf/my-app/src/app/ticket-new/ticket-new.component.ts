@@ -19,6 +19,7 @@ export class TicketNewComponent implements OnInit {
     this.anonym = false;
   }
 
+  //We'd created this monster before we realized that switches can be used as expressions too. We're leaving it as it is for know, to be able to submit the work in time.
   createTicket(){
     let type = "";
     switch (this.type) {
@@ -42,7 +43,7 @@ export class TicketNewComponent implements OnInit {
       isAnonym : this.anonym,
       description : this.description
     }
-    this.userTicketService.createNewTickets(ticket).subscribe();
+    this.userTicketService.createNewTicket(ticket).subscribe();
     window.location.href = "/tickets";
   }
 

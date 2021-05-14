@@ -15,6 +15,7 @@ export class AppComponent {
     this.loginService.logout()
   }
 
+  //This is a delegate function that we can use to bind a boolean value to a dom element.
   isAuthenticated(){
     return Boolean(this.loginService.getJwt())
   }

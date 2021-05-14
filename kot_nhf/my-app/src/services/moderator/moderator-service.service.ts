@@ -28,17 +28,19 @@ export class ModeratorServiceService {
     })
   }
 
-  //TODO a backend nyújt status filterezési lehetőséget 
+  //TODO filtering can also be done by the Backend, it would also be amore optimal solution.
   getAllTickets() {
     return this.http.get<GetAllTicketsResponse>(this.url+"all", this.headers)
   }
 
+  //Assign ticket to the user. This service part is working fine, but we cannot use it yet as we do not know, who we can assign the tickets to
   assign(messageUuid: string, userUuid: string) {
     return this.http.post(this.url + messageUuid + "assign" + userUuid, null, this.headers).subscribe({
       error: error => console.log("ERROR")
     })
   }
 
+  //Unassign ticket to the user. This service part is working fine, but we cannot use it yet as we do not know, who we can assign the tickets to
   unassign(messageUuid: string) {
     return this.http.post(this.url + messageUuid + "/unassign", null, this.headers).subscribe({
       error: error => console.log("ERROR")

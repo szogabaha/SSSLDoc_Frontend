@@ -24,19 +24,18 @@ export class UserTicketService {
 
   constructor(private http: HttpClient, private cookieService: CookieService) { }
 
+  //Get the tickets made by us. If the jwt is not stored, we return an empty list.
   getMyTickets() {
       let jwt = this.cookieService.get("jwt")
-
       if(jwt) {
         return this.http.get<RegisteredByMeRequest>(this.url, this.headers)
-        
       }
       console.log("ERROR")
       return new Observable<RegisteredByMeRequest>()
   }
 
 
-  createNewTickets(request: CreateNewTicketRequest) {
+  createNewTicket(request: CreateNewTicketRequest) {
         return this.http.post<any>(this.url, request, this.headers)
         .pipe(
           catchError(this.handleError)
@@ -55,8 +54,8 @@ export class UserTicketService {
   }
 
 
+  //This could delegate the error to the errorservice. It is not implemented as we first want to further improve it (by showing the error message) 
   private handleError(error: HttpErrorResponse) {
-    //TODO hibaszervisz - hibaüzenet kijelzése a kliensnek
     return throwError("something bad happened")
   }
 }

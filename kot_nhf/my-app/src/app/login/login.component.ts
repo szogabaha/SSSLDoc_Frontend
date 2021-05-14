@@ -18,6 +18,7 @@ export class LoginComponent implements OnInit {
               private cookieService: CookieService) { }
 
   ngOnInit(): void {
+    //This is where we get redirected after logging in to Auth.SCH. We're directing the user to the 'tickets' route from here if the login was successful.
     this.activatedRoute.queryParams.subscribe(params =>{
       var schAuthAccessToken = params['code']
       if (!schAuthAccessToken){
@@ -31,7 +32,7 @@ export class LoginComponent implements OnInit {
           this.router.navigate(['tickets'])
         },
         error: error =>{
-          //TODO
+          //TODO we did not use the errorservice here as we want to further improve this part first
           console.error('There was an error', error);
         }
       })

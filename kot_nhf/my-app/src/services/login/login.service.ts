@@ -19,19 +19,23 @@ export class LoginService {
     private moderatorService: ModeratorServiceService
     ) { }
 
+  //Redirect ourselves to an outer source
   getSchAccessToken() {
     window.location.href = this.schAdminUrl
   }
 
+  //After getting redirected to the page with an accesToken (more like an accesCode), we can have our jwt established
   getBackendJwt(schAuthAccessToken : string) {
     return this.http.post<any>(this.backendLoginEndpoint + "?authorizationCode="+schAuthAccessToken, null)
   }
 
+  //Logging out from the application. We are not perfectly sure if this is the most secure solution
   logout() {
     this.cookieService.delete("jwt")
     this.router.navigate(['login'])
   }
 
+  //Validate if we have a jwt created. If not we return to the part of the application, where we can request it.
   checkJwtEstablished() {
     let jwt = this.cookieService.get("jwt")
     if (!jwt) {
@@ -39,16 +43,18 @@ export class LoginService {
     }
   }
 
+  //This is a simple delegation to avoid violation of law of demeter
   getJwt() {
     return this.cookieService.get("jwt")
   }
-  
-  //TODO
+
+  //This is a part of the service which we really need but the backend does not provide it. At this moment, we cannot use this.
   getAuthorizationLevel() {
     return AuthorizationLevel.Admin
   }
 }
 
+//Same goes for this
 enum AuthorizationLevel {
   User,
   Clerk,
