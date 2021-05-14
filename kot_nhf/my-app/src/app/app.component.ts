@@ -14,4 +14,8 @@ export class AppComponent {
   pressLogout() {
     this.loginService.logout()
   }
+
+  isAuthenticated(){
+    return Boolean(this.loginService.getJwt())
+  }
 }

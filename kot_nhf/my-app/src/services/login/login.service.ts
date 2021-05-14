@@ -39,6 +39,10 @@ export class LoginService {
     }
   }
 
+  getJwt() {
+    return this.cookieService.get("jwt")
+  }
+  
   //TODO
   getAuthorizationLevel() {
     return AuthorizationLevel.Admin

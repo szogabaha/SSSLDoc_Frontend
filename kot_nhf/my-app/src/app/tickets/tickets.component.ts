@@ -47,13 +47,8 @@ export class TicketsComponent implements OnInit {
             }
             return true;
           });
-          this.assignedtickets = data.assignedToMe;
-          console.log(this.myregisteredtickets);
-          console.log(this.assignedtickets);
-          console.log("Me");
         },
         error: error => {
-          console.log("ERROR");
           this.errorService.showError("ERROR");
         }
       })
@@ -80,12 +75,9 @@ export class TicketsComponent implements OnInit {
             }
             return true;
           });
-          console.log(this.myregisteredtickets);
-          console.log(this.assignedtickets);
-          console.log("All");
+
         },
         error: error => {
-          console.log("ERROR");
           this.errorService.showError("ERROR");
         }
       })
@@ -142,8 +134,6 @@ export class TicketsComponent implements OnInit {
   }
 
   getStyle(ticket: RegisteredByMe): string {
-    if (ticket.ticketType == "feedback-request" && ticket.isActive)
-      return "table-warning";
     if (!ticket.isActive)
       return "table-dark";
     if (ticket.assignedTo == null)
