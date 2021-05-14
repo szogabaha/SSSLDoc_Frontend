@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from '../../services/login/login.service';
-import { UserTicketService } from '../../services/userTicketService/user-ticket.service';
+import { UserTicketService } from '../../services/userTicket/user-ticket.service';
 import { RegisteredByMe, Status } from 'src/model/RegisteredByMe';
 import { ModeratorServiceService } from '../../services/moderator/moderator-service.service'
 import { Subscription } from 'rxjs';
