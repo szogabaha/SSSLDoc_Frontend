@@ -32,4 +32,16 @@ export class ModeratorServiceService {
   getAllTickets() {
     return this.http.get<GetAllTicketsResponse>(this.url+"all", this.headers)
   }
+
+  assign(messageUuid: string, userUuid: string) {
+    return this.http.post(this.url + messageUuid + "assign" + userUuid, null, this.headers).subscribe({
+      error: error => console.log("ERROR")
+    })
+  }
+
+  unassign(messageUuid: string) {
+    return this.http.post(this.url + messageUuid + "/unassign", null, this.headers).subscribe({
+      error: error => console.log("ERROR")
+    })
+  }
 }
