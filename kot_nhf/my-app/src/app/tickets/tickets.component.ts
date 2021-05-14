@@ -4,6 +4,7 @@ import { UserTicketService } from '../../services/userTicket/user-ticket.service
 import { RegisteredByMe, Status } from 'src/model/RegisteredByMe';
 import { ModeratorServiceService } from '../../services/moderator/moderator-service.service'
 import { Subscription } from 'rxjs';
+import { ErrorService } from 'src/services/error/error.service'
 
 @Component({
   selector: 'app-tickets',
@@ -14,7 +15,8 @@ export class TicketsComponent implements OnInit {
 
   constructor(private loginService: LoginService,
     private userTicketService: UserTicketService,
-    private moderatorService: ModeratorServiceService) { }
+    private moderatorService: ModeratorServiceService,
+    private errorService : ErrorService) { }
 
   ngOnInit(): void {
     this.loginService.checkJwtEstablished();
@@ -38,10 +40,10 @@ export class TicketsComponent implements OnInit {
               return cmp.assignedTo != null && cmp.isActive && cmp.ticketType != "feedback-request"
             }
             if (this.filter == Status.Feedback) {
-              return cmp.ticketType == "feedback-request"
+              return cmp.ticketType == "feedback-request" && cmp.isActive
             }
             if (this.filter == Status.Closed) {
-              return !cmp.isActive && cmp.ticketType != "feedback-request"
+              return !cmp.isActive
             }
             return true;
           });
@@ -52,6 +54,7 @@ export class TicketsComponent implements OnInit {
         },
         error: error => {
           console.log("ERROR");
+          this.errorService.showError("ERROR");
         }
       })
     } else {
@@ -70,10 +73,10 @@ export class TicketsComponent implements OnInit {
               return cmp.assignedTo != null && cmp.isActive && cmp.ticketType != "feedback-request"
             }
             if (this.filter == Status.Feedback) {
-              return cmp.ticketType == "feedback-request"
+              return cmp.ticketType == "feedback-request" && cmp.isActive
             }
             if (this.filter == Status.Closed) {
-              return !cmp.isActive && cmp.ticketType != "feedback-request"
+              return !cmp.isActive
             }
             return true;
           });
@@ -83,6 +86,7 @@ export class TicketsComponent implements OnInit {
         },
         error: error => {
           console.log("ERROR");
+          this.errorService.showError("ERROR");
         }
       })
     }
@@ -138,7 +142,7 @@ export class TicketsComponent implements OnInit {
   }
 
   getStyle(ticket: RegisteredByMe): string {
-    if (ticket.ticketType == "feedback-request")
+    if (ticket.ticketType == "feedback-request" && ticket.isActive)
       return "table-warning";
     if (!ticket.isActive)
       return "table-dark";

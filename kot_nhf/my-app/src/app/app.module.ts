@@ -12,6 +12,9 @@ import { TicketDetailComponent } from './ticket-detail/ticket-detail.component';
 import { HttpClientModule } from '@angular/common/http';
 import { TicketNewComponent } from './ticket-new/ticket-new.component';
 
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -23,7 +26,9 @@ import { TicketNewComponent } from './ticket-new/ticket-new.component';
   imports: [
     FormsModule,
     BrowserModule,
+    BrowserAnimationsModule,
     HttpClientModule,
+    MatSnackBarModule,
     RouterModule.forRoot([
       {path: 'tickets', component: TicketsComponent},
       {path: 'login', component: LoginComponent},
